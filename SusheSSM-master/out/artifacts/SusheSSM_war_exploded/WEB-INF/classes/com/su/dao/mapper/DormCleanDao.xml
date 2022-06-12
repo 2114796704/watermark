@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.su.dao.DormCleanDao">
+
+    <select id="totalcount"  resultType="Integer">
+        select  count(*) from d_dormgrade
+         <where>
+             <if test="d_id!=null and d_id!=''">
+                 d_id like '%${d_id}%'
+             </if>
+             <if test="d_dormbuilding!=null and d_dormbuilding!=''">
+                 d_dormbuilding like '%${d_dormbuilding}%'
+             </if>
+         </where>
+    </select>
+
+    <select id="getDormClean" resultType="DormClean">
+        select  * from d_dormgrade
+        <where>
+            <if test="d_id!=null and d_id!=''">
+                d_id like '%${d_id}%'
+            </if>
+            <if test="d_dormbuilding!=null and d_dormbuilding!=''">
+                d_dormbuilding like '%${d_dormbuilding}%'
+            </if>
+        </where>
+  order by d_id asc
+ limit #{pageindex},#{pagesize}
+    </select>
+
+<insert id="addDormClean" parameterType="DormClean">
+    insert into d_dormgrade(d_id,d_dormbuilding,d_grade,create_time,update_time) values (
+                   #{d_id}, #{d_dormbuilding}, #{d_grade}, now(),now()
+                                     )
+</insert>
+
+
+<select id="findDormCleanbyid" resultType="DormClean">
+    select  * from d_dormgrade where g_id=#{g_id}
+
+</select>
+
+    <update id="updateDormClean" parameterType="DormClean">
+        update d_dormgrade set d_id=#{d_id},d_dormbuilding=#{d_dormbuilding},d_grade=#{d_grade},
+                               update_time=now()
+                            where  g_id=#{g_id}
+    </update>
+
+    <delete id="deleteDormClean" parameterType="Integer">
+        delete from d_dormgrade where g_id=#{g_id}
+    </delete>
+
+
+</mapper>

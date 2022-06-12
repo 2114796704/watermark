@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+		PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!-- 别名定义 -->
+<!-- 在mapper.xml文件中 parameterType 和 resultType 中使用别名。
+其实是为了避免在xml文件中输入过长的全限定名-->
+<typeAliases>
+	<package name="com.su.pojo"/>
+</typeAliases>
+</configuration>

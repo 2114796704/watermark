@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.su.dao.DormitoryDao">
+    <select id="totalCount" resultType="Integer">
+        select count(*) from d_dormitoryinfo
+        <where>
+            <if test="s_dormitoryid!=null and s_dormitoryid!='' ">
+                and  s_dormitoryid  like '%${s_dormitoryid}%'
+            </if>
+            <if test="d_dormbuilding!=null and s_dormbuilding!='' ">
+                and  d_dormbuilding  like '%${d_dormbuilding}%'
+            </if>
+            <if test="a_name!=null and a_name!='' ">
+                and  a_name  like '%${a_name}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="getDormitory" resultType="Dormitory">
+        select * from d_dormitoryinfo
+        <where>
+            <if test="s_dormitoryid!=null and s_dormitoryid!='' ">
+                and  s_dormitoryid  like '%${s_dormitoryid}%'
+            </if>
+            <if test="d_dormbuilding!=null and s_dormbuilding!='' ">
+                and  d_dormbuilding  like '%${d_dormbuilding}%'
+            </if>
+            <if test="a_name!=null and a_name!='' ">
+                and  a_name  like '%${a_name}%'
+            </if>
+        </where>
+   order by d_id asc
+    limit #{pageIndex},#{pageSize}
+
+    </select>
+
+<insert id="addDormitory" parameterType="Dormitory">
+    insert into d_dormitoryinfo(s_dormitoryid,d_dormbuilding,d_bedtotal,d_bed,a_name)
+    values (#{s_dormitoryid},#{d_dormbuilding},#{d_bedtotal},#{d_bed},#{a_name})
+</insert>
+
+<select id="findDormitorybyid" resultType="Dormitory">
+    select * from d_dormitoryinfo where d_id=#{d_id}
+</select>
+
+
+<update id="updateDormitory" parameterType="Dormitory">
+    update d_dormitoryinfo set s_dormitoryid=#{s_dormitoryid},
+                               d_dormbuilding=#{d_dormbuilding},
+                               d_bedtotal=#{d_bedtotal},
+                               d_bed=#{d_bed},
+                               a_name=#{a_name}
+                             where d_id=#{d_id}
+</update>
+
+    <delete id="deleteDormitorybyid" parameterType="Integer">
+        delete from d_dormitoryinfo where d_id=#{d_id}
+    </delete>
+
+    <select id="getAll" resultType="Dormitory">
+        select * from d_dormitoryinfo
+    </select>
+
+
+<!--多表查询-->
+<select id="findDormitoryStudent" resultMap="ds">
+
+    SELECT dd.s_dormitoryid ,dd.d_dormbuilding,dd.d_bed, ss.s_name,ss.s_phone,ss.s_classid,s_classname
+    FROM d_dormitoryinfo as dd RIGHT JOIN d_student as ss
+                                          on dd.s_dormitoryid=ss.s_dormitoryid
+   <where>
+       <if test="s_dormitoryid!=null and s_dormitoryid!=''">
+           and dd.s_dormitoryid like '%${s_dormitoryid}%'
+       </if>
+   </where>
+</select>
+
+    <resultMap id="ds" type="com.su.pojo.Dormitory">
+        <result property="s_dormitoryid" column="s_dormitoryid" />
+        <result property="d_dormbuilding" column="d_dormbuilding" />
+        <result property="d_bed" column="d_bed"/>
+        <collection property="students" ofType="com.su.pojo.Student">
+            <result property="s_name" column="s_name"/>
+            <result property="s_phone" column="s_phone"/>
+            <result property="s_classid" column="s_classid"/>
+            <result property="s_classname" column="s_classname"/>
+        </collection>
+    </resultMap>
+
+
+</mapper>

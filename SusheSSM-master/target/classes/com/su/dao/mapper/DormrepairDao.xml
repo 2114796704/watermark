@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.su.dao.DormrepairDao">
+
+    <select id="totalcount"  resultType="_Integer">
+        select  count(*) from d_dormrepair
+    <where>
+        <if test="d_id!=null and d_id!=''">
+         and    d_id like '%${d_id}%'
+        </if>
+        <if test="d_dormbuilding!=null and d_dormbuilding!=''">
+            and    d_dormbuilding like '%${d_dormbuilding}%'
+        </if>
+    </where>
+    </select>
+
+
+    <select id="getDormRepair" resultType="DormRepair">
+        select  * from d_dormrepair
+        <where>
+            <if test="d_id!=null and d_id!=''">
+                and    d_id like '%${d_id}%'
+            </if>
+            <if test="d_dormbuilding!=null and d_dormbuilding!=''">
+                and    d_dormbuilding like '%${d_dormbuilding}%'
+            </if>
+        </where>
+      order by d_id asc
+ limit #{pageindex},#{pagesize}
+
+    </select>
+
+<insert id="addDormRepair" parameterType="DormRepair">
+    insert into d_dormrepair(d_id,d_dormbuilding,r_name,reason,create_time,update_time) values(
+           #{d_id},#{d_dormbuilding},#{r_name},#{reason},now(),now()
+                                                                      )
+</insert>
+
+    <select id="findDormRepairbyid" parameterType="_Integer" resultType="DormRepair">
+        select  * from d_dormrepair where r_id=#{r_id}
+    </select>
+
+    <update id="updateDormRepair" parameterType="DormRepair">
+        update d_dormrepair set d_id=#{d_id},d_dormbuilding=#{d_dormbuilding},
+                                r_name=#{r_name},reason=#{reason}
+                      where r_id=#{r_id}
+    </update>
+
+    <delete id="deleteDormRepair" parameterType="Integer">
+        delete from d_dormrepair where r_id=#{r_id}
+    </delete>
+
+    <select id="getAll"  resultType="DormRepair">
+        select * from d_dormrepair
+    </select>
+
+</mapper>

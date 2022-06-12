@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.su.dao.AdminDao">
+<!--登录查询-->
+    <select id="findAdmin" parameterType="Admin" resultType="Admin">
+       select * from d_admin
+           where 
+           <if test="a_username!=null and a_username!='' ">
+               a_username=#{a_username}
+           </if>
+           <if test="a_password!=null and a_password!='' ">
+             and  a_password=#{a_password}
+           </if>
+    </select>
+
+<!--查询总条数（存在搜索参数）-->
+    <select id="totalCount"  resultType="Integer">
+        select count(*) from  d_admin
+          <where>
+            <if test="a_username!=null and a_username !=''">
+                and a_username like '%${a_username}%'
+            </if>
+           <if test="a_describe!=null and a_describe !=''">
+                  and a_describe like '%${a_describe}%'
+           </if>
+           <if test="a_id!=null and a_id !=''">
+                  and a_id like '%${a_id}%'
+          </if>
+          </where>
+
+    </select>
+
+<!--分页查询管理员-->
+    <select id="getAdminList" parameterType="Admin" resultType="Admin">
+        select * from  d_admin
+ <where>
+     <if test="a_username!=null and a_username !=''">
+         and a_username like '%${a_username}%'
+     </if>
+     <if test="a_describe!=null and a_describe !=''">
+         and a_describe like '%${a_describe}%'
+     </if>
+     <if test="a_id!=null and a_id !=''">
+         and a_id like '%${a_id}%'
+     </if>
+ </where>
+        ORDER BY  a_id asc
+        limit #{currentPage},#{pageSize}
+
+    </select>
+
+<!--根据id查询管理员 -->
+    <select id="findAdminById" resultType="Admin" parameterType="Integer">
+       select  * from d_admin  where a_id=#{a_id}
+    </select>
+
+<!--修改管理员信息-->
+  <update id="updateAdmin" parameterType="Admin">
+      update d_admin
+      <set>
+          <if test="a_username!=null and a_username !=''">
+              a_username=#{a_username},
+          </if>
+          <if test="a_password !=null and a_password !=''">
+              a_password=#{a_password},
+          </if>
+          <if test="a_name !=null and a_name !=''">
+              a_name=#{a_name},
+          </if>
+          <if test="a_phone !=null and a_phone !='' ">
+              a_phone=#{a_phone},
+          </if>
+          <if test="a_power !=null and a_power !=''">
+              a_power=#{a_power},
+          </if>
+          <if test="a_describe!=null and a_describe!=''">
+              a_describe=#{a_describe},
+          </if>
+      </set>
+      where a_id = #{a_id}
+  </update>
+
+<!--添加管理员-->
+ <insert id="addAdmin" parameterType="Admin" >
+     insert into d_admin(a_username,a_password,a_name,a_phone,a_power,a_describe) values(
+    #{a_username},#{a_password},#{a_name},#{a_phone},#{a_power},#{a_describe})
+
+ </insert>
+
+<!--删除管理员-->
+    <delete id="deleteAdmin" parameterType="Integer">
+        delete  from d_admin where a_id=#{a_id}
+
+    </delete>
+<!--查询全部管理员，用于导出功能-->
+    <select id="getAll" resultType="Admin">
+        select  * from d_admin
+    </select>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.su.dao.StudentCleanDao">
+
+   <select id="totalCount"  resultType="Integer">
+select count(*) from d_stgrade
+<where>
+    <if test="s_studentid !=null and s_studentid!=''">
+        s_studentid like '%${s_studentid}%'
+    </if>
+
+    <if test="s_name !=null and s_name!=''">
+        s_name like '%${s_name}%'
+    </if>
+    <if test="s_dormitoryid !=null and s_dormitoryid!=''">
+        s_dormitoryid like '%${s_dormitoryid}%'
+    </if>
+
+</where>
+
+   </select>
+
+<select id="getStudentClean" resultType="StudentClean">
+    select * from d_stgrade
+    <where>
+        <if test="s_studentid !=null and s_studentid!=''">
+            s_studentid like '%${s_studentid}%'
+        </if>
+
+        <if test="s_name !=null and s_name!=''">
+            s_name like '%${s_name}%'
+        </if>
+        <if test="s_dormitoryid !=null and s_dormitoryid!=''">
+            s_dormitoryid like '%${s_dormitoryid}%'
+        </if>
+    </where>
+order by g_id asc
+limit #{pageIndex},#{pageSize}
+
+</select>
+
+<insert id="addStudentClean" parameterType="StudentClean">
+    insert into d_stgrade(s_studentid,s_name,s_grade,s_classid,s_dormitoryid,create_time,update_time)
+          values (#{s_studentid},#{s_name},#{s_grade},#{s_classid},#{s_dormitoryid},now(),now())
+</insert>
+
+    <select id="findStudentCleanbyid" resultType="StudentClean">
+        select * from d_stgrade where g_id=#{g_id}
+    </select>
+
+    <update id="updateStudentClean" parameterType="StudentClean">
+        update d_stgrade set s_studentid=#{s_studentid},s_name=#{s_name},
+                             s_grade=#{s_grade},s_classid=#{s_classid},
+                                 s_dormitoryid=#{s_dormitoryid},
+                                  update_time=now()
+                                where g_id=#{g_id}
+    </update>
+
+    <delete id="deleteStudentCleanbyid" parameterType="Integer">
+        delete from d_stgrade    where g_id=#{g_id}
+    </delete>
+
+    <select id="getAll" resultType="StudentClean">
+        select * from d_stgrade
+    </select>
+
+</mapper>
