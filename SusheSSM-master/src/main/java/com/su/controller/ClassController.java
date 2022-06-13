@@ -27,7 +27,7 @@ public class ClassController {
         model.addAttribute("ci",pi);
         model.addAttribute("c_classid",c_classid);
         model.addAttribute("c_classname",c_classname);
-        model.addAttribute("c_counselloraaaaaa",c_counsellor);
+        model.addAttribute("c_counsellor",c_counsellor);
 
         return "class/class_list";
     }
