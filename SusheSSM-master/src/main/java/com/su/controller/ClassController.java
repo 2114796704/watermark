@@ -1,9 +1,7 @@
 package com.su.controller;
 
-import com.su.pojo.Admin;
 import com.su.pojo.Class;
 import com.su.pojo.PageInfo;
-import com.su.pojo.Student;
 import com.su.service.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +25,8 @@ public class ClassController {
         model.addAttribute("ci",pi);
         model.addAttribute("c_classid",c_classid);
         model.addAttribute("c_classname",c_classname);
-        model.addAttribute("c_counsellor",c_counsellor);
+
+        model.addAttribute("c_counselloraaaaaa",c_counsellor);
 
         return "class/class_list";
     }
